@@ -32,7 +32,29 @@ canvas.redraw();
 function Snake(length, bodyColour, outlineColour, startingPos) {
 	this.length = length;
 	this.bodyColour = bodyColour;
-	this.outlineColour = outlineColour;
+	this.outlineColour = outlineColour;Snake.prototype.move = function() {
+	if (this.nd.length) {
+		this.direction = this.nd.shift();
+	}
+
+	this.nx = this.array[0].x;
+	this.ny = this.array[0].y;
+	var tail;
+
+	switch(this.direction) {
+		case 'right':
+			this.nx++;
+			break;
+		case 'left':
+			this.nx--;
+			break;
+		case 'up':
+			this.ny--;
+			break;
+		case 'down':
+			this.ny++;
+			break;
+	}
 	this.array = [];
 	this.direction = 'right';
 	this.nd = []; 
@@ -45,4 +67,47 @@ function Snake(length, bodyColour, outlineColour, startingPos) {
 		}
 	};
 	this.create();
+}
+Snake.prototype.move = function() {
+	if (this.nd.length) {
+		this.direction = this.nd.shift();
+	}
+
+	this.nx = this.array[0].x;
+	this.ny = this.array[0].y;
+	var tail;
+
+	switch(this.direction) {
+		case 'right':
+			this.nx++;
+			break;
+		case 'left':
+			this.nx--;
+			break;
+		case 'up':
+			this.ny--;
+			break;
+		case 'down':
+			this.ny++;
+			break;
+	}
+	
+	if(this.outsideBounds() || this.colliding()) {
+		game.over();
+		return;
+	}
+
+	if(this.eatingFood()) {
+		game.score++;
+		tail = {x: this.nx, y: this.ny};
+		food = new Food();
+	} else {
+		var tail = this.array.pop();
+		tail.x = this.nx;
+		tail.y = this.ny;
+	}
+
+	this.array.unshift(tail);
+
+	this.paint();
 }
