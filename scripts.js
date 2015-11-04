@@ -10,9 +10,27 @@ canvas.height = canvas.element.getAttribute('height');
 canvas.cellWidth = 10;
 
 canvas.redraw = function(fillColour, strokeColour){
-	// Add default canvas colour options
 	var fillColour = fillColour || 'white',
 		strokeColour = strokeColour || 'black';
 
 	this.paint(0, 0, fillColour, strokeColour, this.width, this.height);
 }
+canvas.paint = function(x, y, fillColour, strokeColour, width, height) {
+	var width = width || this.cellWidth,
+		height = height || this.cellWidth,
+		fillColour = fillColour || 'red',
+		strokeColour = strokeColour || 'white';
+
+	this.context.fillStyle = fillColour;
+	this.context.fillRect(x*canvas.cellWidth, y*canvas.cellWidth, width, height);
+	this.context.strokeStyle = strokeColour;
+	this.context.strokeRect(x*canvas.cellWidth, y*canvas.cellWidth, width, height);
+};
+
+canvas.paintText = function(text, x, y) {
+	var x = x || 5,
+		y = y || 15;
+	this.context.fillText(text, x, y);
+};
+
+canvas.redraw();
